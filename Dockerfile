@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first for better caching
+# Copy requirements
 COPY requirements.txt .
 
 # Install Python dependencies
@@ -20,9 +20,6 @@ COPY main.py .
 
 # Expose port
 EXPOSE 8000
-
-# Pre-download the model (optional, for faster startup)
-RUN python -c "from diffusers import StableDiffusionInstructPix2PixPipeline; StableDiffusionInstructPix2PixPipeline.from_pretrained('timbrooks/instruct-pix2pix')"
 
 # Run the application
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
