@@ -66,14 +66,22 @@ generated_images = {}
 
 class CompleteBannerPipeline:
     def __init__(self, together_api_key: str, nvidia_api_key: str):
+        if not together_api_key or not nvidia_api_key:
+        raise ValueError("Both API keys are required")
+    
         self.together_api_key = together_api_key
         self.nvidia_api_key = nvidia_api_key
         self.together_base_url = "https://api.together.xyz/v1/chat/completions"
         self.nvidia_image_url = "https://ai.api.nvidia.com/v1/genai/black-forest-labs/flux.1-dev"
         self.model = "meta-llama/Llama-3.3-70B-Instruct-Turbo-Free"
-        # Initialize Together client
-        self.together_client = Together(api_key=together_api_key)
-        # Prompt descriptors
+    
+        # Initialize Together client with error handling
+        try:
+            self.together_client = Together(api_key=together_api_key)
+            logger.info("✅ Together client initialized successfully")
+        except Exception as e:
+            logger.error(f"❌ Failed to initialize Together client: {e}")
+            raise
         self.color_descriptors = {
             "Red": "vibrant red", "Green": "festive green", "Blue": "deep blue",
             "Yellow": "bright yellow", "Orange": "warm orange", "Purple": "rich purple",
