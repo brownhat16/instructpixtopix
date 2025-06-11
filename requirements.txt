@@ -7,3 +7,4 @@ certifi==2023.11.17
 Pillow==10.1.0
 together==0.2.11
 python-multipart==0.0.6
+python-dotenv
