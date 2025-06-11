@@ -77,7 +77,7 @@ class CompleteBannerPipeline:
     
         # Initialize Together client with error handling
         try:
-            self.together_client = Together(api_key=together_api_key)
+            self.together_client = Together()
             logger.info("✅ Together client initialized successfully")
         except Exception as e:
             logger.error(f"❌ Failed to initialize Together client: {e}")
