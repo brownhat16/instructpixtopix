@@ -67,7 +67,7 @@ generated_images = {}
 class CompleteBannerPipeline:
     def __init__(self, together_api_key: str, nvidia_api_key: str):
         if not together_api_key or not nvidia_api_key:
-        raise ValueError("Both API keys are required")
+           raise ValueError("Both API keys are required")
     
         self.together_api_key = together_api_key
         self.nvidia_api_key = nvidia_api_key
