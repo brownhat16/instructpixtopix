@@ -18,6 +18,7 @@ from PIL import Image
 import tempfile
 import os
 from together import Together
+from dotenv import load_dotenv
 
 # Configure logging
 logging.basicConfig(
@@ -584,11 +585,27 @@ class CompleteBannerPipeline:
             logger.error(f"Failed to save image temporarily: {e}")
             return None
 
+# Load environment variables
+load_dotenv()
 
-# Initialize Pipeline
-TOGETHER_API_KEY = "50f7427ca836843296c3ceccd2092c504ca45f20e30cb922e0c35cfb7046aeb0"
-NVIDIA_API_KEY = "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"
-pipeline = CompleteBannerPipeline(TOGETHER_API_KEY, NVIDIA_API_KEY)
+# Get API keys from environment variables
+TOGETHER_API_KEY = os.getenv("TOGETHER_API_KEY")
+NVIDIA_API_KEY = os.getenv("NVIDIA_API_KEY")
+
+# Validate API keys
+if not TOGETHER_API_KEY:
+    raise ValueError("TOGETHER_API_KEY environment variable is required")
+if not NVIDIA_API_KEY:
+    raise ValueError("NVIDIA_API_KEY environment variable is required")
+
+# Initialize Pipeline with error handling
+try:
+    pipeline = CompleteBannerPipeline(TOGETHER_API_KEY, NVIDIA_API_KEY)
+    logger.info("✅ Pipeline initialized successfully")
+except Exception as e:
+    logger.error(f"❌ Failed to initialize pipeline: {e}")
+    raise
+
 
 # FastAPI App
 app = FastAPI(
